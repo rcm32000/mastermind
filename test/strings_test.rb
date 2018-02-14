@@ -12,13 +12,12 @@ class TestStrings < Minitest::Test
   def test_welcome_text
     string = Strings.new
 
-    assert string.welcome.end_with?("(q)uit?")
+    assert string.welcome_txt.end_with?("(q)uit?\n>")
   end
 
-  def test_welcome_text
+  def test_start_text
     string = Strings.new
-    
-    assert string.welcome.end_with?("(q)uit?")
+    assert string.start_txt.end_with?("guess?")
   end
 
 end
