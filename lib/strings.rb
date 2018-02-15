@@ -21,8 +21,14 @@ class Strings
     "one or more of these colors.  The object of the game "\
     "is to figure out what color(s) are being used, and in "\
     "what order.\n"\
-    "You will receive feedback after each guess saring how "\
+    "You will receive feedback after each guess saying how "\
     "many elements or colors you guesses correctly, and how "\
-    "many of them were in the correct slot."
+    "many of them were in the correct slot.\n"\
+    "Would you like to (p)lay or (q)uit?"
+  end
+
+  def quit_txt
+    "Leaving so soon? Ah well...thanks for playing!!!"
+  end
 
 end
