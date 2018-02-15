@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
 require './lib/commands'
+require './lib/strings'
 
 class TestCommands < Minitest::Test
 
@@ -12,8 +13,9 @@ class TestCommands < Minitest::Test
   end
 
   def test_play
+    string = Strings.new
     command = Commands.new
-
-    
+binding.pry
+    assert_equal string.start_txt, command.p
   end
 end

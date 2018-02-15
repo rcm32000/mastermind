@@ -17,7 +17,7 @@ class TestStrings < Minitest::Test
 
   def test_start_text
     string = Strings.new
-    assert string.start_txt.end_with?("guess?")
+    assert string.start_txt.end_with?("guess?\n")
   end
 
 end
