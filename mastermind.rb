@@ -1,3 +1,3 @@
-require './lib/mastermind'
+require './lib/core'
 game = MasterMind.new
 game.start_game

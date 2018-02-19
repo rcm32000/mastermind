@@ -10,7 +10,7 @@ class Answer
   #   ['B','B','B','B','G','G','G','G','R','R','R','R','Y','Y','Y','Y']
   # end
   #
-  # def element(guess)
+  # def correct_element_count(guess)
   #   element_count = 0
   #   guess.chars.each do |comparable|
   #     if @answer.include?(comparable) then element_count += 1
@@ -19,7 +19,7 @@ class Answer
   #   element_count
   # end
   #
-  # def position(guess)
+  # def correct_position_count(guess)
   #   position_count = 0
   #   guess.chars.each_with_index do |item,index|
   #     if @answer[index] == item then position_count += 1
