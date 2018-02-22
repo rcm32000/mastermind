@@ -1,4 +1,5 @@
 require './lib/strings'
+require 'pry'
 
 class MasterMind
   include Strings
@@ -6,7 +7,6 @@ class MasterMind
     @answer      = possibles
     @start_time  = nil
     @stop_time   = nil
-    @guess_count = 0
   end
 
   def start_game
@@ -40,24 +40,41 @@ class MasterMind
     start_txt
     game_started = true
     @start_time = Time.now
+    guess_count = 0
     until game_started == false
       user_input = gets.chomp.downcase
-      @guess_count += 1
+      guess_count += 1
       if %w[q quit].include?(user_input)
         game_started = false
         quit_txt
         abort
       elsif user_input.chars == @answer
         @stop_time = Time.now
+        win_txt(guess_count, total_time)
         game_started = false
-        win_txt(@guess_count, total_time)
+        guess_count = 0
+        win_input = gets.chomp
+        until %w[q quit].include?(win_input)
+          if %w[p play].include?(win_input)
+            play_game
+          elsif %w[i instructions].include?(win_input)
+            info_txt
+            win_input = gets.chomp.downcase
+          else
+            puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
+            win_input = gets.chomp.downcase
+          end
+        end
+        quit_txt
+        abort
       elsif valid_guess?(user_input)
         element = correct_element_count(user_input)
         position = correct_position_count(user_input)
-        guess_txt(user_input, element, position, @guess_count)
+        guess_txt(user_input, element, position, guess_count)
       else
-        puts 'Please keep your guesses to the first letter of each of the '\
-        "four colors: Blue, Green, Red, and Yellow.\n>"
+        puts "Please keep your guesses to\nthe first letter of each of the "\
+        "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "
+        "a length of four characters.\n>"
       end
     end
   end
@@ -71,8 +88,12 @@ class MasterMind
 
   def correct_element_count(guess)
     element_count = 0
-    guess.chars.each do |comparable|
-      element_count += 1 if @answer.include?(comparable)
+    correct_array = @answer.dup
+    guess.chars.each do |check|
+      element_count += correct_array.find_all do |comparables|
+        comparables == check
+      end.length
+      correct_array.delete(check)
     end
     element_count
   end
