@@ -3,8 +3,9 @@ require 'pry'
 
 class MasterMind
   include Strings
-  def initialize
-    @answer      = possibles
+  attr_reader :answer
+  def initialize(answer = possibles)
+    @answer      = answer
     @start_time  = nil
     @stop_time   = nil
   end
@@ -24,7 +25,6 @@ class MasterMind
       end
     end
     quit_txt
-    # require 'pry';binding.pry
   end
 
   def possibles
