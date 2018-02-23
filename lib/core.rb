@@ -4,13 +4,15 @@ require 'pry'
 class MasterMind
   include Strings
   attr_reader :answer
-  def initialize(answer = possibles)
-    @answer      = answer
+  def initialize
+  # def initialize(answer = possibles)
+    # @answer      = possibles
     @start_time  = nil
     @stop_time   = nil
   end
 
   def start_game
+    @answer = possibles
     welcome_txt
     user_input = gets.chomp.downcase
     until %w[q quit].include?(user_input)
@@ -52,28 +54,29 @@ class MasterMind
         @stop_time = Time.now
         win_txt(guess_count, total_time)
         game_started = false
-        guess_count = 0
-        win_input = gets.chomp
-        until %w[q quit].include?(win_input)
-          if %w[p play].include?(win_input)
-            play_game
-          elsif %w[i instructions].include?(win_input)
-            info_txt
-            win_input = gets.chomp.downcase
-          else
-            puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
-            win_input = gets.chomp.downcase
-          end
-        end
-        quit_txt
-        abort
+        start_game
+        # guess_count = 0
+        # win_input = gets.chomp
+        # until %w[q quit].include?(win_input)
+        #   if %w[p play].include?(win_input)
+        #     play_game
+        #   elsif %w[i instructions].include?(win_input)
+        #     info_txt
+        #     win_input = gets.chomp.downcase
+        #   else
+        #     puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
+        #     win_input = gets.chomp.downcase
+          # end
+        # end
+        # quit_txt
+        # abort
       elsif valid_guess?(user_input)
         element = correct_element_count(user_input)
         position = correct_position_count(user_input)
         guess_txt(user_input, element, position, guess_count)
       else
         puts "Please keep your guesses to\nthe first letter of each of the "\
-        "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "
+        "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "\
         "a length of four characters.\n>"
       end
     end
@@ -90,6 +93,7 @@ class MasterMind
     element_count = 0
     correct_array = @answer.dup
     guess.chars.each do |check|
+      binding.pry
       element_count += correct_array.find_all do |comparables|
         comparables == check
       end.length
