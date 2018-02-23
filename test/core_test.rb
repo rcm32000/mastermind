@@ -9,6 +9,14 @@ class TestMasterMind < MiniTest::Test
     assert_instance_of MasterMind, game
   end
 
+  def test_input_works
+    game = MasterMind.new
+    input = "p"
+    this = game.user_input(input)
+
+    assert_equal , this
+  end
+
   def test_bgry_is_a_guess
     game = MasterMind.new ['B','G','R','Y']
 

@@ -1,3 +1,3 @@
 require './lib/core'
 game = MasterMind.new
-game.start_game
+game.welcome_game

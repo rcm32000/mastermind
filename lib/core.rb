@@ -5,28 +5,17 @@ class MasterMind
   include Strings
   attr_reader :answer
   def initialize
-  # def initialize(answer = possibles)
-    # @answer      = possibles
     @start_time  = nil
     @stop_time   = nil
   end
 
-  def start_game
+  def welcome_game
     @answer = possibles
     welcome_txt
-    user_input = gets.chomp.downcase
-    until %w[q quit].include?(user_input)
-      if %w[p play].include?(user_input)
-        play_game
-      elsif %w[i instructions].include?(user_input)
-        info_txt
-        user_input = gets.chomp.downcase
-      else
-        puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
-        user_input = gets.chomp.downcase
-      end
+    until user_input? == true
+    user_input(gets.chomp.downcase)
+    puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
     end
-    quit_txt
   end
 
   def possibles
@@ -38,48 +27,51 @@ class MasterMind
     answer
   end
 
-  def play_game
+  def start_game
     start_txt
     game_started = true
     @start_time = Time.now
     guess_count = 0
     until game_started == false
-      user_input = gets.chomp.downcase
-      guess_count += 1
-      if %w[q quit].include?(user_input)
-        game_started = false
-        quit_txt
-        abort
-      elsif user_input.chars == @answer
+      input = user_input(gets.chomp.downcase)
+      guess_count += 1 if valid_guess?(input) == true
+      if input.chars == @answer
         @stop_time = Time.now
         win_txt(guess_count, total_time)
-        game_started = false
-        start_game
-        # guess_count = 0
-        # win_input = gets.chomp
-        # until %w[q quit].include?(win_input)
-        #   if %w[p play].include?(win_input)
-        #     play_game
-        #   elsif %w[i instructions].include?(win_input)
-        #     info_txt
-        #     win_input = gets.chomp.downcase
-        #   else
-        #     puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
-        #     win_input = gets.chomp.downcase
-          # end
-        # end
-        # quit_txt
-        # abort
-      elsif valid_guess?(user_input)
-        element = correct_element_count(user_input)
-        position = correct_position_count(user_input)
-        guess_txt(user_input, element, position, guess_count)
+        input
+        @answer = possibles
+        guess_count = 0
+      elsif valid_guess?(input)
+        element = correct_element_count(input)
+        position = correct_position_count(input)
+        # binding.pry
+        guess_txt(input, element, position, guess_count)
+      elsif input == '='
+        puts "MASTER!...The correct answer is #{@answer.join.upcase}!\n>"
+      elsif input == '`' || '~' then cheat_txt
+        puts "\nYou gave up after ONLY #{guess_count}...you suck.\nI'm "\
+        "kicking you back to start...have fun...you hack.\n\n"
+        game_started == false
+        welcome_game
       else
         puts "Please keep your guesses to\nthe first letter of each of the "\
         "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "\
         "a length of four characters.\n>"
       end
     end
+  end
+
+  def user_input(input)
+    case input
+    when 'p' || 'play' then start_game
+    when 'q'|| 'quit' then quit_game.abort
+    when 'i' ||'instructions' then info
+    end
+    input
+  end
+
+  def user_input?
+    true == 'p' || 'play' || 'i' || 'instructions' || 'q' || 'quit'
   end
 
   def total_time
@@ -93,7 +85,6 @@ class MasterMind
     element_count = 0
     correct_array = @answer.dup
     guess.chars.each do |check|
-      binding.pry
       element_count += correct_array.find_all do |comparables|
         comparables == check
       end.length
@@ -112,5 +103,33 @@ class MasterMind
 
   def valid_guess?(user_input)
     user_input.length == 4 && user_input.chars - %w[b g r y] == []
+  end
+
+  def info
+    info_txt
+    user_input(gets.chomp.downcase)
+  end
+
+  def quit_game
+    quit_txt
+    abort
+  end
+
+  def win_game
+    win_txt(guess_count, total_time)
+    win_input = gets.chomp
+    until %w[q quit].include?(win_input)
+      if %w[p play].include?(win_input)
+        start_game
+      elsif %w[i instructions].include?(win_input)
+        info_txt
+        win_input = gets.chomp.downcase
+      else
+        puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
+        win_input = gets.chomp.downcase
+      end
+    end
+    quit_txt
+    abort
   end
 end
