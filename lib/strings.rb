@@ -47,4 +47,10 @@ module Strings
     puts "YOU *$*@ING CHEATER!!! #{@answer.join.upcase} was the correct "\
     "answer!"
   end
+
+  def wrong_guess_txt
+    puts "Please keep your guesses to\nthe first letter of each of the "\
+    "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "\
+    "a length of four characters.\n>"
+  end
 end

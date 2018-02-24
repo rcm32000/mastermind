@@ -3,7 +3,7 @@ require 'pry'
 
 class MasterMind
   include Strings
-  attr_reader :answer
+  attr_accessor :answer
   def initialize
     @start_time  = nil
     @stop_time   = nil
@@ -44,28 +44,25 @@ class MasterMind
       elsif valid_guess?(input)
         element = correct_element_count(input)
         position = correct_position_count(input)
-        # binding.pry
         guess_txt(input, element, position, guess_count)
       elsif input == '='
         puts "MASTER!...The correct answer is #{@answer.join.upcase}!\n>"
-      elsif input == '`' || '~' then cheat_txt
+      elsif  %w[` ~].include? input then cheat_txt
         puts "\nYou gave up after ONLY #{guess_count}...you suck.\nI'm "\
         "kicking you back to start...have fun...you hack.\n\n"
         game_started == false
         welcome_game
       else
-        puts "Please keep your guesses to\nthe first letter of each of the "\
-        "four colors: Blue, Green, Red, and Yellow.\nYour guess must be "\
-        "a length of four characters.\n>"
+        wrong_guess_txt
       end
     end
   end
 
   def user_input(input)
     case input
-    when 'p' || 'play' then start_game
-    when 'q'|| 'quit' then quit_game.abort
-    when 'i' ||'instructions' then info
+    when 'p', 'play' then start_game
+    when 'q', 'quit' then quit_game.abort
+    when 'i', 'instructions' then info
     end
     input
   end
@@ -85,10 +82,13 @@ class MasterMind
     element_count = 0
     correct_array = @answer.dup
     guess.chars.each do |check|
-      element_count += correct_array.find_all do |comparables|
-        comparables == check
-      end.length
-      correct_array.delete(check)
+      correct_array.each_with_index do |char, index|
+        if check == char
+          correct_array[index] = nil
+          element_count += 1
+          break
+        end
+      end
     end
     element_count
   end
