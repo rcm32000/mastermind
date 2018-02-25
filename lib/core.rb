@@ -13,7 +13,7 @@ class MasterMind
     @answer = possibles
     welcome_txt
     until user_input? == true
-    user_input(gets.chomp.downcase)
+    evaluate_user_input(gets.chomp.downcase)
     puts "Please choose (p)lay, (i)nstructions, or (q)uit.\n>"
     end
   end
@@ -29,36 +29,11 @@ class MasterMind
 
   def start_game
     start_txt
-    game_started = true
     @start_time = Time.now
-    guess_count = 0
-    until game_started == false
-      input = user_input(gets.chomp.downcase)
-      guess_count += 1 if valid_guess?(input) == true
-      if input.chars == @answer
-        @stop_time = Time.now
-        win_txt(guess_count, total_time)
-        input
-        @answer = possibles
-        guess_count = 0
-      elsif valid_guess?(input)
-        element = correct_element_count(input)
-        position = correct_position_count(input)
-        guess_txt(input, element, position, guess_count)
-      elsif input == '='
-        puts "MASTER!...The correct answer is #{@answer.join.upcase}!\n>"
-      elsif  %w[` ~].include? input then cheat_txt
-        puts "\nYou gave up after ONLY #{guess_count}...you suck.\nI'm "\
-        "kicking you back to start...have fun...you hack.\n\n"
-        game_started == false
-        welcome_game
-      else
-        wrong_guess_txt
-      end
-    end
+    play_game_loop
   end
 
-  def user_input(input)
+  def evaluate_user_input(input)
     case input
     when 'p', 'play' then start_game
     when 'q', 'quit' then quit_game.abort
@@ -68,7 +43,7 @@ class MasterMind
   end
 
   def user_input?
-    true == 'p' || 'play' || 'i' || 'instructions' || 'q' || 'quit'
+    'p' || 'play' || 'i' || 'instructions' || 'q' || 'quit'
   end
 
   def total_time
@@ -101,13 +76,13 @@ class MasterMind
     position_count
   end
 
-  def valid_guess?(user_input)
-    user_input.length == 4 && user_input.chars - %w[b g r y] == []
+  def valid_guess?(input)
+    input.length == 4 && input.chars - %w[b g r y] == []
   end
 
   def info
     info_txt
-    user_input(gets.chomp.downcase)
+    evaluate_user_input(gets.chomp.downcase)
   end
 
   def quit_game
@@ -115,7 +90,7 @@ class MasterMind
     abort
   end
 
-  def win_game
+  def win_game(guess_count)
     win_txt(guess_count, total_time)
     win_input = gets.chomp
     until %w[q quit].include?(win_input)
@@ -131,5 +106,36 @@ class MasterMind
     end
     quit_txt
     abort
+  end
+
+  def play_game_loop
+    game_started = true
+    guess_count = 0
+    while game_started
+      input = evaluate_user_input(gets.chomp.downcase)
+      guess_count += 1 if valid_guess?(input)
+      if input.chars == @answer
+        correct_guess(guess_count)
+      elsif valid_guess?(input)
+        element = correct_element_count(input)
+        position = correct_position_count(input)
+        guess_txt(input, element, position, guess_count)
+      elsif input == '='
+        puts "MASTER!...The correct answer is #{@answer.join.upcase}!\n>"
+      elsif  %w[` ~].include? input then cheat_txt
+        puts "\nYou gave up after ONLY #{guess_count}...you suck.\nI'm "\
+        "kicking you back to start...have fun...you hack.\n\n"
+        welcome_game
+      else
+        wrong_guess_txt
+      end
+    end
+  end
+
+  def correct_guess(guess_count)
+    @stop_time = Time.now
+    win_game(guess_count)
+    @answer = possibles
+    guess_count = 0
   end
 end

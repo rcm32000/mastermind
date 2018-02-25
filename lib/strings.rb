@@ -9,7 +9,8 @@ module Strings
     puts "\nI have generated a beginner sequence with four "\
     "elements\nmade up of: (r)ed, (g)reen, (b)lue, and "\
     "(y)ellow.\nUse (q)uit at any time to end the game.\n"\
-    "What's your guess? (WARNING: Never hit the \"~\" key next to the 1!!!)\n>"\
+    "What's your guess? (WARNING: If you would like to cheat, use the \"~\" "\
+    "key next to the 1!!!)\n>"\
   end
 
   def info_txt
@@ -36,7 +37,8 @@ module Strings
     puts "\nYour guess of #{user_input.upcase} has #{element_count} "\
       "of the correct elements with #{position_count} in the "\
       "correct positions.\nYou've taken #{guess_count} guess.\nWhat is "\
-      "your next guess? (WARNING: Never hit the \"~\" key next to the 1!!!)\n>"
+      "your next guess? (WARNING: If you would like to cheat, use the \"~\" "\
+      "key next to the 1!!!)\n>"\
   end
 
   def quit_txt
