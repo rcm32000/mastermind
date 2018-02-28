@@ -13,28 +13,38 @@ class TestCommands < Minitest::Test
     assert_instance_of Answer, answer
   end
 
-  def test_bgry_is_a_guess
-    assert answer.possible.include? 'B'
-    assert answer.possible.include? 'G'
-    assert answer.possible.include? 'R'
-    assert answer.possible.include? 'Y'
-  end
-
-  def test_answer_length
-    assert answer.answer.length == 4
-  end
-
-  def test_guess_against_answer_colors
-    skip
-    answer = Answer.new(['B','G','R','Y'])
+  def test_guess_against_answer_colors_1
+    @answer = ['B','G','R','Y']
+    answer = Answer.new(@answer)
     guess = 'BGRY'
-    assert_equal 4, answer.element(guess)
+    assert_equal 4, answer.correct_element_count(guess)
+  end
+
+  def test_guess_against_answer_colors_2
+    @answer = ['B','B','Y','Y']
+    answer = Answer.new(@answer)
+    guess = 'BGRG'
+    assert_equal 1, answer.correct_element_count(guess)
+  end
+
+  def test_guess_against_answer_colors_3
+    @answer = ['B','B','R','Y']
+    answer = Answer.new(@answer)
+    guess = 'YGRB'
+    assert_equal 3, answer.correct_element_count(guess)
+  end
+
+  def test_guess_against_answer_colors_4
+    @answer = ['R','G','B','B']
+    answer = Answer.new(@answer)
+    guess = 'RGBY'
+    assert_equal 3, answer.correct_element_count(guess)
   end
 
   def test_guess_against_answer_position
-    answer = Answer.new(['B','G','R','Y'])
+    @answer = ['B','G','R','Y']
+    answer = Answer.new(@answer)
     guess = 'BGYR'
-    assert_equal 2, answer.position(guess)
+    assert_equal 2, answer.correct_position_count(guess)
   end
-
 end

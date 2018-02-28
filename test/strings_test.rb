@@ -4,19 +4,14 @@ require 'pry'
 require './lib/strings'
 
 class TestStrings < Minitest::Test
-  def setup
-    @string = Strings.new
-  end
-
-  def test_class_exists
-    assert_instance_of Strings, @string
-  end
-
+  include Strings
   def test_welcome_text
-    assert @string.welcome_txt.end_with?("(q)uit?\n>")
+    skip
+    assert welcome_txt.end_with?("(q)uit?\n>")
   end
 
-  def test_start_text
-    assert @string.start_txt.end_with?("guess?\n")
+  def test_game_loop_text
+    skip
+    assert game_loop_txt.end_with?("guess?\n")
   end
 end

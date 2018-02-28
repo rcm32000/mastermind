@@ -67,6 +67,18 @@ module Strings
     "or (E)xtreme.\n>"\
   end
 
+  def game_loop_info_txt
+    puts "\nMasterMind consists of colors.\nDepending on the difficulty "\
+    "level, will give you colors and nubmer of slots.\nSlots will randomly "\
+    "be filled with one or more of these colors.\nThe object of the game "\
+    "is to figure out what color(s) are being used, and in what order.\n"\
+    'You will receive feedback after each guess saying how '\
+    "many elements or colors you guessed correctly,\nand how "\
+    "many of them were in the correct slot.\n"\
+    'As you increase in difficulty, there will more colors and more '\
+    "positions.\nWhat is your next guess?\n>"
+  end
+
   def level_choice_txt
     puts "Which level would you like to play?\n(B)eginner: 4 colors and 4 "\
     "positions\ni(N)termediate: 5 colors and 6 positions\n(A)dvanced: 6 "\
@@ -93,33 +105,33 @@ module Strings
   def beginner_guess_txt(user_input, element_count, position_count, guess_count)
     puts "\nYour guess of #{user_input.upcase} has #{element_count} "\
       "of the correct elements with #{position_count} in the "\
-      "correct positions.\nYou've taken #{guess_count} guess.\nWhat is "\
-      'your next guess? (WARNING: If you would like to cheat, type (C)heat'\
-      "y, but BEWARE!!!)\n#{beginner_guesses_txt}\n>"\
+      "correct positions.\nYou've taken #{guess_count} guess."\
+      "\n#{beginner_guesses_txt}\nWhat is your next guess? (WARNING: If you "\
+      "would like to cheat, type (C)heat,but BEWARE!!!)\n>"\
   end
 
   def intermediate_guess_txt(user_input, element_count, position_count, guess_count)
     puts "\nYour guess of #{user_input.upcase} has #{element_count} "\
       "of the correct elements with #{position_count} in the "\
-      "correct positions.\nYou've taken #{guess_count} guess.\nWhat is "\
-      'your next guess? (WARNING: If you would like to cheat, type (C)heat'\
-      "y, but BEWARE!!!)\n#{intermediate_guesses_txt}\n>"\
+      "correct positions.\nYou've taken #{guess_count} guess."\
+      "\n#{intermediate_guesses_txt}\nWhat is your next guess? (WARNING: If you "\
+      "would like to cheat, type (C)heat,but BEWARE!!!)\n>"\
   end
 
   def advanced_guess_txt(user_input, element_count, position_count, guess_count)
     puts "\nYour guess of #{user_input.upcase} has #{element_count} "\
       "of the correct elements with #{position_count} in the "\
-      "correct positions.\nYou've taken #{guess_count} guess.\nWhat is "\
-      'your next guess? (WARNING: If you would like to cheat, type (C)heat'\
-      "y, but BEWARE!!!)\n#{advanced_guesses_txt}\n>"\
+      "correct positions.\nYou've taken #{guess_count} guess."\
+      "\n#{advanced_guesses_txt}\nWhat is your next guess? (WARNING: If you "\
+      "would like to cheat, type (C)heat,but BEWARE!!!)\n>"\
   end
 
   def extreme_guess_txt(user_input, element_count, position_count, guess_count)
     puts "\nYour guess of #{user_input} has #{element_count} "\
       "of the correct elements with #{position_count} in the "\
-      "correct positions.\nYou've taken #{guess_count} guess.\nWhat is "\
-      'your next guess? (WARNING: If you would like to cheat, type (C)heat'\
-      "y, but BEWARE!!!)\n#{extreme_guesses_txt}\n>"\
+      "correct positions.\nYou've taken #{guess_count} guess."\
+      "\n#{extreme_guesses_txt}\nWhat is your next guess? (WARNING: If you "\
+      "would like to cheat, type (C)heat,but BEWARE!!!)\n>"\
   end
 
   def quit_txt
@@ -139,7 +151,7 @@ module Strings
   end
 
   def wrong_guess_txt
-    puts " your guesses to the first letter of each of the colors.\n>"
+    " your guesses to the first letter of each of the colors.\n>"
   end
 
   def master_cheat_txt
@@ -161,7 +173,6 @@ module Strings
     "Your past guesses:\n\#  Guess\tElements\tPositions\n"\
     "#{guess_table(input)}\n-------------------------------------------"
   end
-
 
   def advanced_guesses_txt
     "Your past guesses:\n\#  Guess\tElements\tPositions\n"\
