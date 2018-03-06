@@ -24,7 +24,7 @@ class MasterMind < Answer
     level_choice_txt
     until user_input? == true
       user_choose_level(gets.chomp.downcase)
-      puts 'Please choose (b)eginner, i(n)termediate, (a)dvanced or (e)xtreme.'\
+      puts 'Please choose (B)eginner, i(N)termediate, (A)dvanced or (E)xtreme.'\
       "\n>"
     end
   end
@@ -99,7 +99,7 @@ class MasterMind < Answer
 
   def play_info
     play_info_txt
-    evaluate_user_input(gets.chomp.downcase)
+    user_choose_level(gets.chomp.downcase)
   end
 
   def quit_game
@@ -191,52 +191,61 @@ class MasterMind < Answer
 
   def beginner_check_guess(guess_count, input)
     return correct_guess(guess_count) if input.chars == @answer
-    return cheat_game(guess_count) if input.include?('c' || 'cheat')
+    return cheat_game(guess_count) if input == 'c' || input == 'cheat'
     return master_cheat_txt if input == '='
-    return game_loop_info_txt if input.include?('i' || 'instructions')
-    return quit_game if input.include?('q' || 'quit')
+    return game_loop_info_txt if input == 'i' || input == 'instructions'
+    return quit_game if input == 'q' || input == 'quit'
     return beginner_guess_response(guess_count, input) if beginner_valid_guess?(input)
     beginner_wrong_guess unless beginner_valid_guess?(input)
   end
 
   def intermediate_check_guess(guess_count, input)
     return correct_guess(guess_count) if input.chars == @answer
-    return cheat_game(guess_count) if input.include?('c' || 'cheat')
+    return cheat_game(guess_count) if input == 'c' || input == 'cheat'
     return master_cheat_txt if input == '='
-    return game_loop_info_txt if input.include?('i' || 'instructions')
-    return quit_game if input.include?('q' || 'quit')
+    return game_loop_info_txt if  input == 'i' || input == 'instructions'
+    return quit_game if input == 'q' || input == 'quit'
     return intermediate_guess_response(guess_count, input) if intermediate_valid_guess?(input)
     intermediate_wrong_guess unless intermediate_valid_guess?(input)
   end
 
   def advanced_check_guess(guess_count, input)
     return correct_guess(guess_count) if input.chars == @answer
-    return cheat_game(guess_count) if input.include?('c' || 'cheat')
+    return cheat_game(guess_count) if input == 'c' || input == 'cheat'
     return master_cheat_txt if input == '='
-    return game_loop_info_txt if input.include?('i' || 'instructions')
-    return quit_game if input.include?('q' || 'quit')
+    return game_loop_info_txt if  input == 'i' || input == 'instructions'
+    return quit_game if input == 'q' || input == 'quit'
     return advanced_guess_response(guess_count, input) if advanced_valid_guess?(input)
     a_e_wrong_guess unless advanced_valid_guess?(input)
   end
 
   def extreme_check_guess(guess_count, input)
     return extreme_correct_guess(guess_count) if input.chars == @answer
-    return extreme_cheat_game(guess_count) if input.downcase.include?('c' || 'cheat')
+    return extreme_cheat_game(guess_count) if input.downcase == 'c' || input.downcase == 'cheat'
     return extreme_master_cheat_txt if input == '='
-    return game_loop_info_txt if input.downcase.include?('i' || 'instructions')
-    return quit_game if input.downcase.include?('q' || 'quit')
+    return game_loop_info_txt if  input.downcase == 'i' || input.downcase == 'instructions'
+    return quit_game if input.downcase == 'q' || input.downcase == 'quit'
     return extreme_guess_response(guess_count, input) if extreme_valid_guess?(input)
     a_e_wrong_guess unless extreme_valid_guess?(input)
   end
 
   def cheat_game(guess_count)
     cheat_txt(guess_count)
+    countdown(5)
     welcome_game
   end
 
   def extreme_cheat_game(guess_count)
     extreme_cheat_txt(guess_count)
+    countdown(5)
     welcome_game
+  end
+
+  def countdown(seconds)
+    return if seconds < 1
+    puts "\nTHIS MESSAGE WILL SELF DESTRUCT IN #{seconds} SECONDS"
+    sleep 1
+    countdown(seconds - 1)
   end
 
   def beginner_guess_response(guess_count, input)
@@ -267,7 +276,17 @@ class MasterMind < Answer
     @input = input
     table = []
     guesses_array.each_with_index do |guess, index|
-      table << ["#{index + 1}  #{guess.keys[0].upcase}\t\t"\
+      table << ["#{index + 1}\t#{guess.keys[0].upcase}\t\t"\
+        "#{guess.values[0][0]}\t\t#{guess.values[0][1]}"]
+    end
+    table.join("\n")
+  end
+
+  def advanced_guess_table(input)
+    @input = input
+    table = []
+    guesses_array.each_with_index do |guess, index|
+      table << ["#{index + 1}\t#{guess.keys[0].upcase}\t"\
         "#{guess.values[0][0]}\t\t#{guess.values[0][1]}"]
     end
     table.join("\n")
@@ -277,7 +296,7 @@ class MasterMind < Answer
     @input = input
     table = []
     guesses_array.each_with_index do |guess, index|
-      table << ["#{index + 1}  #{guess.keys[0]}\t\t"\
+      table << ["#{index + 1}\t#{guess.keys[0]}\t"\
         "#{guess.values[0][0]}\t\t#{guess.values[0][1]}"]
     end
     table.join("\n")
@@ -291,25 +310,25 @@ class MasterMind < Answer
 
   def beginner_wrong_guess
     puts "\nKeep#{wrong_guess_txt}" if @input.length == 4
-    puts "\nYour guess has too many characters, you need 4, and/or keep"\
+    puts "\nYour guess has too many characters, you need 4, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length > 4
-    puts "\nYour guess has too few characters, you need 4, and/or keep"\
+    puts "\nYour guess has too few characters, you need 4, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length < 4
   end
 
   def intermediate_wrong_guess
     puts "\nKeep#{wrong_guess_txt}" if @input.length == 6
-    puts "\nYour guess has too many characters, you need 6, and/or keep"\
+    puts "\nYour guess has too many characters, you need 6, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length > 6
-    puts "\nYour guess has too few characters, you need 6, and/or keep"\
+    puts "\nYour guess has too few characters, you need 6, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length < 6
   end
 
   def a_e_wrong_guess
     puts "\nKeep#{wrong_guess_txt}" if @input.length == 8
-    puts "\nYour guess has too many characters, you need 8, and/or keep"\
+    puts "\nYour guess has too many characters, you need 8, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length > 8
-    puts "\nYour guess has too few characters, you need 8, and/or keep"\
+    puts "\nYour guess has too few characters, you need 8, and/or\nkeep"\
     "#{wrong_guess_txt}" if @input.length < 8
   end
 end
